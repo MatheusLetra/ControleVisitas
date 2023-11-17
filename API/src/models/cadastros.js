@@ -1,6 +1,8 @@
 const Sequelize = require('sequelize')
 const conexao = require('../config/conexao')
 
+const Usuarios = require('./usuarios')
+
 const Cadastros = conexao.define('cadastros', {
   codigo: {
     type: Sequelize.INTEGER,
@@ -19,5 +21,8 @@ const Cadastros = conexao.define('cadastros', {
   complemento: { type: Sequelize.STRING(50) },
   telefone: { type: Sequelize.STRING(15) }
 }, { freezeTableName: true })
+
+Cadastros.hasOne(Usuarios, { foreignKey: 'codigo_cadastro'})
+Usuarios.belongsTo(Cadastros, { foreignKey: 'codigo_cadastro' })
 
 module.exports = Cadastros
