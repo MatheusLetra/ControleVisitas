@@ -59,7 +59,7 @@ const Cadastro = () => {
 
   return (
     <div className="register-form-container">
-      <h1>Cadastro</h1>
+      <h3>Cadastro</h3>
       <form>
         <div className="form-row">
           <div className="form-group">

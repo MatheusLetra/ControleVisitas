@@ -7,15 +7,31 @@ import {
 
 import Login from './pages/Login'
 import Cadastro from './pages/Cadastro'
+import Main from './pages/Main'
+import Visitas from './pages/Visitas'
+import Funcionarios from './pages/Funcionarios'
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Login />,
   }, {
-    path: "/cadastro",
-    element: <Cadastro />,
-  },
+    path: "/main",
+    element: <Main />,
+    children: [
+      {
+        path: "/main/cadastro",
+        element: <Cadastro />,
+      },{
+        path: "/main/visitas",
+        element: <Visitas />,
+      },{
+        path: "/main/funcionarios",
+        element: <Funcionarios />,
+      }
+      
+    ]
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(

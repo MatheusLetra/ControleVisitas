@@ -1,0 +1,32 @@
+.navbar-container {
+  background-color: rgb(10,45,69);
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 60px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-container a {
+  text-decoration: none;
+  color: #fff;
+  margin-right: 20px;
+}
+
+.navbar-menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 20px;
+}
+
+img {
+  width: 40px;
+  height: 40px;
+  margin-left: 20px;
+}
