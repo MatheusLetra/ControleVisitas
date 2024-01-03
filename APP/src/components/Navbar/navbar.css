@@ -1,5 +1,5 @@
 .navbar-container {
-  background-color: rgb(10,45,69);
+  background-color: rgb(10, 45, 69);
   position: absolute;
   top: 0;
   width: 100vw;
@@ -11,11 +11,17 @@
   justify-content: space-between;
 }
 
-.navbar-container a {
+.user-name, .navbar-container a {
   text-decoration: none;
   color: #fff;
   margin-right: 20px;
 }
+
+.navbar-container a:hover {
+  color: coral;
+  font-size: 18px;
+}
+
 
 .navbar-menu {
   display: flex;
@@ -29,4 +35,17 @@ img {
   width: 40px;
   height: 40px;
   margin-left: 20px;
+}
+
+.btn-logout {
+  background-color: rgb(10, 45, 69);
+  width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 20px;
+}
+
+.btn-logout:hover {
+  background-color: red;
 }

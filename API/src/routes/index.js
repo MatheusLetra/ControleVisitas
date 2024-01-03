@@ -24,6 +24,7 @@ router.get('/usuarios/:codigo', UsuariosController.buscarPorCodigo)
 router.post('/usuarios', UsuariosController.criarNovo)
 router.put('/usuarios/:codigo', UsuariosController.atualizarUsuario)
 router.delete('/usuarios/:codigo', UsuariosController.excluirUsuario)
+router.post('/usuarios/login', UsuariosController.login)
 
 // ************* VISITAS *************************
 router.get('/visitas', VisitasController.buscarTodas)

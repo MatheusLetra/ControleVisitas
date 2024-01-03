@@ -1,7 +1,7 @@
 const Cadastros = require('../models/cadastros')
 const Usuarios = require('../models/usuarios')
 
-const { criptografarSenha } = require('../utils/seguranca')
+const { criptografarSenha, compararSenha } = require('../utils/seguranca')
 
 
 module.exports = {
@@ -141,6 +141,36 @@ module.exports = {
       } else {
         res.status(400).send({ message: 'Usuário não encontrado na base de dados' })
       }
+    } catch (error) {
+      res.status(500).send(error)
+    }
+  },
+  async login(req, res) {
+    const { username, password } = req.body
+    try {
+      console.log(username, password)
+
+      const usuarioExiste = await Usuarios.findOne({ where: { login: username } })
+
+      if (usuarioExiste) {
+        if (await compararSenha(password, usuarioExiste.dataValues.senha) || password === usuarioExiste.dataValues.senha) {
+
+          let dados = await Cadastros.findByPk(usuarioExiste.dataValues.codigo_cadastro)
+
+          dados = {
+            ...dados.dataValues,
+            login: usuarioExiste.dataValues.login
+          }
+
+          res.status(200).send({ message: 'OK', extra_data: dados })
+        } else {
+          res.status(403).send({ message: 'Senha inválida' })
+        }
+
+      } else {
+        res.status(401).send({ message: 'Usuário não encontrado' })
+      }
+
     } catch (error) {
       res.status(500).send(error)
     }
