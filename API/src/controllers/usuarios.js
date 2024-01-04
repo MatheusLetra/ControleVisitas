@@ -77,6 +77,7 @@ module.exports = {
         await Usuarios.create(novoUsuario)
 
         res.status(201).send(cadastroSalvo)
+        return
       }
 
 

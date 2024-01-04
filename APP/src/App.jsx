@@ -10,6 +10,7 @@ import Cadastro from './pages/Cadastro'
 import Main from './pages/Main'
 import Visitas from './pages/Visitas'
 import Funcionarios from './pages/Funcionarios'
+import CadastrarFuncionarios from "./pages/CadastrarFuncionarios";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +29,9 @@ const router = createBrowserRouter([
       },{
         path: "/main/funcionarios",
         element: <Funcionarios />,
+      },{
+        path: "/main/funcionarios/cadastrar",
+        element: <CadastrarFuncionarios />,
       }
       
     ]
