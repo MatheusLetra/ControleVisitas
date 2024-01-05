@@ -9,6 +9,7 @@ import { formatCpfCnpj, formatCep, formatTelefone } from '../../utils/mascaras'
 import api from '../../utils/api'
 
 import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 export default function CadastrarFuncionarios() {
   const [cpfCnpj, setCpfCnpj] = useState('');
@@ -49,15 +50,24 @@ export default function CadastrarFuncionarios() {
         'Content-Type': 'application/json'
       }
     }).then((response) => {
-      console.log(response.status)
       if (response.status === 201) {
         navigate('/main/funcionarios')
       } else {
-        alert(response.data.message)
+        Swal.fire({
+          title: 'Erro',
+          text: response.data.message,
+          icon: 'error',
+          confirmButtonText: 'OK'
+        })
       }
     }).catch((error) => {
       const { response } = error
-      alert(response.data.message)
+      Swal.fire({
+        title: 'Erro',
+        text: response.data.message,
+        icon: 'error',
+        confirmButtonText: 'OK'
+      })
     });
   };
 

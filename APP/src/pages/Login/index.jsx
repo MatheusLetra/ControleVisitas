@@ -7,6 +7,7 @@ import Input from '../../components/Input';
 import api from '../../utils/api';
 
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -15,13 +16,13 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    let dados =  localStorage.getItem("dados_usuario_controle_visitas")
+    let dados = localStorage.getItem("dados_usuario_controle_visitas")
 
     dados = JSON.parse(dados)
 
     if (dados) {
       if (dados.codigo > 0) {
-        navigate('/main')  
+        navigate('/main')
       }
     }
 
@@ -44,11 +45,21 @@ const Login = () => {
         localStorage.setItem("dados_usuario_controle_visitas", JSON.stringify(dados))
         navigate('/main')
       } else {
-        alert(response.data.message)
+        Swal.fire({
+          title: 'Erro',
+          text: response.data.message,
+          icon: 'error',
+          confirmButtonText: 'OK'
+        })
       }
     }).catch((error) => {
       const { response } = error
-      alert(response.data.message)
+      Swal.fire({
+        title: 'Erro',
+        text: response.data.message,
+        icon: 'error',
+        confirmButtonText: 'OK'
+      })
     });
   };
 
