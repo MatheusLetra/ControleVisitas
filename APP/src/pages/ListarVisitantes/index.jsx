@@ -1,4 +1,4 @@
-import './funcionarios.css'
+import './visitantes.css'
 
 import { useState, useEffect } from 'react'
 
@@ -6,42 +6,60 @@ import { useNavigate } from 'react-router-dom'
 import api from '../../utils/api'
 
 import Swal from 'sweetalert2'
+import { formatTelefone } from '../../utils/mascaras'
 
-export default function Funcionarios() {
+export default function ListarVisitantes() {
 
   const [filtro, setFiltro] = useState("")
   const [users, setUsers] = useState([])
+  const [usersOriginal, setUsersOriginal] = useState([])
 
   const navigate = useNavigate()
 
   async function buscarUsuarios() {
-    await api.get('/usuarios',
+    await api.get('/cadastros',
       {}, {
       headers: {
         'Content-Type': 'application/json'
       }
     }).then((response) => {
-
       if (response.status === 200) {
-        const { usuarios } = response.data
+        const { cadastros } = response.data
 
-        if (usuarios && usuarios.length > 0) {
-          setUsers(usuarios)
+        if (cadastros && cadastros.length > 0) {
+          setUsers(cadastros)
+          setUsersOriginal(cadastros)
         }
 
       }
-
-
     })
   }
 
   useEffect(() => {
     buscarUsuarios()
-  })
+  }, [])
+
+  
+
+  useEffect(() => {
+    if (filtro !== '') {
+      let usuariosAux = []
+
+      usersOriginal.forEach((usuario) => {
+        if (usuario.nome.toUpperCase().includes(filtro.toUpperCase())) {
+          usuariosAux = [...usuariosAux, usuario]
+        }
+      })
+
+      setUsers([...usuariosAux])
+    } else {
+      setUsers([...usersOriginal])
+    }
+  }, [filtro])
 
   async function excluirUsuario(user_id) {
     Swal.fire({
-      title: 'Deseja realmente excluir o funcionário?',
+      title: 'Deseja realmente excluir o visitante?',
       showCancelButton: true,
       confirmButtonText: 'Excluir',
       confirmButtonColor: 'red',
@@ -51,7 +69,7 @@ export default function Funcionarios() {
     }).then(async (result) => {
       if (result.isConfirmed) {
 
-        await api.delete(`/usuarios/${user_id}`,
+        await api.delete(`/cadastros/${user_id}`,
           {}, {
           headers: {
             'Content-Type': 'application/json'
@@ -61,14 +79,14 @@ export default function Funcionarios() {
           if (response.status === 204) {
             Swal.fire({
               title: 'Sucesso',
-              text: 'Funcionário deletado com sucesso!',
+              text: 'Visitante deletado com sucesso!',
               icon: 'success',
               confirmButtonText: 'OK'
             })
           } else {
             Swal.fire({
               title: 'Erro',
-              text: 'Ocorreu um erro ao excluir o Funcionário!',
+              text: 'Ocorreu um erro ao excluir o Visitante!',
               icon: 'error',
               confirmButtonText: 'OK'
             })
@@ -77,10 +95,10 @@ export default function Funcionarios() {
         }).catch((error) => {
           Swal.fire({
             title: 'Erro',
-            text: 'Ocorreu um erro ao excluir o Funcionário!',
+            text: 'Ocorreu um erro ao excluir o Visitante!',
             icon: 'error',
             confirmButtonText: 'OK'
-          })  
+          })
         })
       }
     })
@@ -88,11 +106,11 @@ export default function Funcionarios() {
 
   const mostrarUsuarios = users.map((user, index) => (
     <div className="usuario-container" key={index}>
-      <p className="info-usuario">{user.cadastro.nome}</p>
-      <p className="info-usuario">{user.cadastro.endereco}, {user.cadastro.numero}</p>
-      <p className="info-usuario">{user.cadastro.telefone}</p>
-      <button className="btn-usuario" onClick={() => { }}>Editar</button>
-      <button className="btn-usuario btn-usuario-excluir" onClick={() => excluirUsuario(user.codigo_cadastro)}>Excluir</button>
+      <p className="info-usuario">{user.nome}</p>
+      <p className="info-usuario">{user.endereco}, {user.numero}</p>
+      <p className="info-usuario">{formatTelefone(user.telefone)}</p>
+      <button className="btn-usuario" onClick={() => navigate(`/main/visitantes/editar/${user.codigo}`)}>Editar</button>
+      <button className="btn-usuario btn-usuario-excluir" onClick={() => excluirUsuario(user.codigo)}>Excluir</button>
     </div>
   )
   );
@@ -108,12 +126,12 @@ export default function Funcionarios() {
           onChange={(e) => setFiltro(e.target.value)}
         />
 
-        <button className="btn-cadastrar" onClick={() => navigate('/main/funcionarios/cadastrar')}>Novo</button>
+        <button className="btn-cadastrar" onClick={() => navigate('/main/visitantes/cadastrar')}>Novo</button>
       </div>
 
       <div className="lista-funcionarios-container">
         {users.length > 0 ?
-          mostrarUsuarios : <h1>Nenhum funcionário cadastrado</h1>
+          mostrarUsuarios : <h1>Nenhum visitante cadastrado</h1>
         }
       </div>
     </div>

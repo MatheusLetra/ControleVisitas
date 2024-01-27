@@ -111,7 +111,7 @@ module.exports = {
         const usuarioAtualizado = {
           codigo_cadastro: codigo,
           login: req.body.login,
-          senha: await criptografarSenha(req.body.senha)
+          //senha: await criptografarSenha(req.body.senha)
         }
 
         await Usuarios.update(usuarioAtualizado, { where: { codigo_cadastro: codigo } })

@@ -6,11 +6,14 @@ import {
 } from "react-router-dom";
 
 import Login from './pages/Login'
-import Cadastro from './pages/Cadastro'
+import CadastrarVisitantes from './pages/CadastrarVisitantes'
 import Main from './pages/Main'
 import Visitas from './pages/Visitas'
-import Funcionarios from './pages/Funcionarios'
+import ListarFuncionarios from './pages/ListarFuncionarios'
 import CadastrarFuncionarios from "./pages/CadastrarFuncionarios";
+import EditarFuncionarios from "./pages/EditarFuncionarios";
+import ListarVisitantes from "./pages/ListarVisitantes";
+import EditarVisitantes from "./pages/EditarVisitantes";
 
 const router = createBrowserRouter([
   {
@@ -21,17 +24,26 @@ const router = createBrowserRouter([
     element: <Main />,
     children: [
       {
-        path: "/main/cadastro",
-        element: <Cadastro />,
+        path: "/main/visitantes",
+        element: <ListarVisitantes />,
+      },{
+        path: "/main/visitantes/cadastrar",
+        element: <CadastrarVisitantes />,
+      },{
+        path: "/main/visitantes/editar/:id",
+        element: <EditarVisitantes />,
       },{
         path: "/main/visitas",
         element: <Visitas />,
       },{
         path: "/main/funcionarios",
-        element: <Funcionarios />,
+        element: <ListarFuncionarios />,
       },{
         path: "/main/funcionarios/cadastrar",
         element: <CadastrarFuncionarios />,
+      },{
+        path: "/main/funcionarios/editar/:id",
+        element: <EditarFuncionarios />,
       }
       
     ]

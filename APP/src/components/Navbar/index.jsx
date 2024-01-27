@@ -37,7 +37,7 @@ export default function Navbar() {
         <img src={Logo} />
         <p className="user-name">Olá, {name}</p>
         <Link to="/main">Home</Link>
-        <Link to="/main/cadastro">Visitantes</Link>
+        <Link to="/main/visitantes">Visitantes</Link>
         <Link to="/main/visitas">Visitas</Link>
         <Link to="/main/funcionarios">Funcionários</Link>
       </div>

@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react'
 
-import './cadastro.css';
+import Input from "../../components/Input"
 
-import Input from '../../components/Input';
+import './editarvisitantes.css'
 
-const Cadastro = () => {
+import { formatCpfCnpj, formatCep, formatTelefone } from '../../utils/mascaras'
+
+import api from '../../utils/api'
+
+import { useNavigate, useParams } from 'react-router-dom'
+import Swal from 'sweetalert2'
+
+export default function EditarVisitantes() {
   const [cpfCnpj, setCpfCnpj] = useState('');
   const [nome, setNome] = useState('');
   const [endereco, setEndereco] = useState('');
@@ -16,40 +23,81 @@ const Cadastro = () => {
   const [complemento, setComplemento] = useState('');
   const [telefone, setTelefone] = useState('');
 
-  const formatCpfCnpj = (value) => {
-    // Formatando CPF ou CNPJ
-    const cleanedValue = value.replace(/\D/g, ''); // Remover caracteres não numéricos
-    if (cleanedValue.length <= 11) {
-      // CPF
-      return cleanedValue.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-    } else {
-      // CNPJ
-      return cleanedValue.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, '$1.$2.$3/$4-$5');
+  const navigate = useNavigate()
+  const { id } = useParams()
+
+  async function buscarVisitante(codigo_visitante) {
+    await api.get(`/cadastros/${codigo_visitante}`,
+      {}, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((response) => {
+      if (response.status === 200) {
+        const dados = response.data
+
+        setCpfCnpj(dados.cpfcnpj)
+        setNome(dados.nome)
+        setEndereco(dados.endereco)
+        setNumero(dados.numero)
+        setBairro(dados.bairro)
+        setCep(dados.cep)
+        setCidade(dados.cidade)
+        setEstado(dados.estado)
+        setComplemento(dados.complemento)
+        setTelefone(dados.telefone)
+
+
+      } else {
+        navigate('/main/visitantes')
+      }
+    })
+  }
+
+  useEffect(() => {
+    buscarVisitante(id)
+  }, [id])
+
+  const handleRegister = async () => {
+
+    let dados = {
+      cpfcnpj: cpfCnpj,
+      nome: nome,
+      endereco: endereco,
+      numero: numero,
+      bairro: bairro,
+      cep: cep,
+      cidade: cidade,
+      estado: estado,
+      complemento: complemento,
+      telefone: telefone
     }
-  };
 
-  const formatCep = (value) => {
-    // Formatando CEP
-    return value.replace(/(\d{5})(\d{3})/, '$1-$2');
-  };
-
-  const formatTelefone = (value) => {
-    // Formatando Telefone
-    return value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-  };
-
-  const handleRegister = () => {
-    // Lógica de registro aqui
-    console.log('CPF/CNPJ:', cpfCnpj);
-    console.log('Nome:', nome);
-    console.log('Endereço:', endereco);
-    console.log('Número:', numero);
-    console.log('Bairro:', bairro);
-    console.log('CEP:', cep);
-    console.log('Cidade:', cidade);
-    console.log('Estado:', estado);
-    console.log('Complemento:', complemento);
-    console.log('Telefone:', telefone);
+    await api.put(`/cadastros/${id}`,
+      dados, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((response) => {
+      if (response.status === 200) {
+        navigate('/main/visitantes')
+      } else {
+        Swal.fire({
+          title: 'Erro',
+          text: response.data.message,
+          icon: 'error',
+          confirmButtonText: 'OK'
+        })
+      }
+    }).catch((error) => {
+      const { response } = error
+      Swal.fire({
+        title: 'Erro',
+        text: response.data.message,
+        icon: 'error',
+        confirmButtonText: 'OK'
+      })
+    });
   };
 
   const estadosBrasileiros = [
@@ -59,7 +107,7 @@ const Cadastro = () => {
 
   return (
     <div className="register-form-container">
-      <h3>Cadastro</h3>
+      <h3>Editar Visitante</h3>
       <form>
         <div className="form-row">
           <div className="form-group">
@@ -80,7 +128,9 @@ const Cadastro = () => {
               fieldName="nome"
               description="Nome:"
               value={nome}
-              onChange={(e) => setNome(e.target.value)}
+              onChange={(e) => {
+                setNome(e.target.value)
+              }}
               type="text"
             />
 
@@ -192,11 +242,9 @@ const Cadastro = () => {
         </div>
 
         <button type="button" onClick={handleRegister}>
-          Cadastrar
+          Editar
         </button>
       </form>
     </div>
   );
-};
-
-export default Cadastro;
+}
