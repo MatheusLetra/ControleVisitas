@@ -8,12 +8,13 @@ import {
 import Login from './pages/Login'
 import CadastrarVisitantes from './pages/CadastrarVisitantes'
 import Main from './pages/Main'
-import Visitas from './pages/Visitas'
+import ListarVisitas from './pages/ListarVisitas'
 import ListarFuncionarios from './pages/ListarFuncionarios'
 import CadastrarFuncionarios from "./pages/CadastrarFuncionarios";
 import EditarFuncionarios from "./pages/EditarFuncionarios";
 import ListarVisitantes from "./pages/ListarVisitantes";
 import EditarVisitantes from "./pages/EditarVisitantes";
+import CadastrarVisitas from "./pages/CadastrarVisitas";
 
 const router = createBrowserRouter([
   {
@@ -34,7 +35,10 @@ const router = createBrowserRouter([
         element: <EditarVisitantes />,
       },{
         path: "/main/visitas",
-        element: <Visitas />,
+        element: <ListarVisitas />,
+      },{
+        path: "/main/visitas/cadastrar",
+        element: <CadastrarVisitas />,
       },{
         path: "/main/funcionarios",
         element: <ListarFuncionarios />,
