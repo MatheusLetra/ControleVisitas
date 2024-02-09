@@ -1,3 +1,4 @@
+const Sequelize = require('sequelize')
 const Cadastros = require('../models/cadastros')
 const Usuarios = require('../models/usuarios')
 const Visitas = require('../models/visitas')
@@ -6,11 +7,7 @@ const moment = require('moment')
 module.exports = {
   async buscarTodas(req, res) {
     try {
-      const visitas = await Visitas.findAll({
-        include: [
-          { model: Cadastros, required: true }
-        ]
-      })
+      const visitas = await Visitas.findAll({ include: { all: true, nested: true }, order: [['data_visita', 'DESC']] })
 
       if (visitas.length > 0) {
         res.status(200).send({ visitas: [...visitas] })
@@ -28,9 +25,7 @@ module.exports = {
     try {
       const visita = await Visitas.findOne({
         where: { codigo: codigo },
-        include: [
-          { model: Cadastros, required: true }
-        ]
+        include: { all: true, nested: true }
       })
 
       if (visita) {

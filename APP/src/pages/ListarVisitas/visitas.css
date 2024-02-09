@@ -58,7 +58,7 @@
   overflow-y: auto;
 }
 
-.usuario-container {
+.visita-container {
   background-color: chocolate;
 
   width: 100%;
@@ -74,25 +74,39 @@
 
 }
 
-.btn-usuario {
+.visita-container-cabecalho {
+  width: 100%;
+  height: 60px;
+  margin-bottom: 10px;
+
+  border-radius: 8px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+
+}
+
+.btn-visitas {
   width: 70px;
   height: 40px;
   text-align: center;
 }
 
-.btn-usuario:hover {
+.btn-visitas:hover {
   font-weight: bold;
 }
 
-.btn-usuario-excluir {
+.btn-visitas-excluir {
   background-color: red;
 }
 
-.btn-usuario-excluir:hover {
+.btn-visitas-excluir:hover {
   background-color: red;  
 }
 
-.info-usuario {
+.info-visitas {
   width: 250px;
   text-align: center;
   color: #FFF;

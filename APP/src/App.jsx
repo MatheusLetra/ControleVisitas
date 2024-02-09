@@ -15,6 +15,7 @@ import EditarFuncionarios from "./pages/EditarFuncionarios";
 import ListarVisitantes from "./pages/ListarVisitantes";
 import EditarVisitantes from "./pages/EditarVisitantes";
 import CadastrarVisitas from "./pages/CadastrarVisitas";
+import EditarVisitas from "./pages/EditarVisitas";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,9 @@ const router = createBrowserRouter([
       },{
         path: "/main/visitas/cadastrar",
         element: <CadastrarVisitas />,
+      },{
+        path: "/main/visitas/editar/:id",
+        element: <EditarVisitas />,
       },{
         path: "/main/funcionarios",
         element: <ListarFuncionarios />,

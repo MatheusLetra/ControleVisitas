@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
-import './cadastrarvisitas.css'
+import './editarvisitas.css'
 import Input from '../../components/Input'
 import {  formatarDataEnviar, retornarDataAtual } from '../../utils/datas'
 import api from '../../utils/api'
 import Swal from 'sweetalert2'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
-export default function CadastrarVisitas() {
+export default function EditarVisitas() {
   const [codvisitante, setCodVisitante] = useState('')
   const [codagendador, setCodAgendador] = useState('')
   const [motivoVisita, setMotivoVisita] = useState('')
@@ -16,6 +16,34 @@ export default function CadastrarVisitas() {
   const [funcionarios, setFuncionarios] = useState([])
 
   const navigate = useNavigate()
+  const { id } = useParams()
+
+
+  async function buscarVisita(codigo_visita) {
+    await api.get(`/visitas/${codigo_visita}`,
+      {}, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((response) => {
+      if (response.status === 200) {
+        const dados = response.data
+
+       setCodAgendador(dados.codigo_agendador)
+       setCodVisitante(dados.codigo_visitante)
+       setMotivoVisita(dados.motivo_visita)
+       setDataVisita(dados.data_visita)
+       setStatusVisita(dados.status_visita)
+
+      } else {
+        navigate('/main/visitas')
+      }
+    })
+  }
+
+  useEffect(() => {
+    buscarVisita(id)
+  }, [id])
 
 
   async function buscarCadastros() {
@@ -54,27 +82,13 @@ export default function CadastrarVisitas() {
     })
   }
 
-  async function preencherAgendador() {
-    let dados = localStorage.getItem("dados_usuario_controle_visitas")
-
-    dados = JSON.parse(dados)
-
-    if (!dados) {
-      navigate('/')
-    } else {
-      if (dados.codigo > 0) {
-        setCodAgendador(dados.codigo)
-      }
-    }
-  }
 
   useEffect(() => {
     buscarCadastros()
     buscarFuncionarios()
-    preencherAgendador()
   }, [])
 
-  async function handleCadastrarVisita() {
+  async function handleEditarVisita() {
     if (!parseInt(codagendador) > 0) {
       Swal.fire({
         title: 'Erro',
@@ -127,13 +141,13 @@ export default function CadastrarVisitas() {
       status: statusvisita
     }
 
-    await api.post('/visitas',
+    await api.put(`/visitas/${id}`,
       dados, {
       headers: {
         'Content-Type': 'application/json'
       }
     }).then((response) => {
-      if (response.status === 201) {
+      if (response.status === 204) {
         navigate('/main/visitas')
         return
       } else {
@@ -158,7 +172,7 @@ export default function CadastrarVisitas() {
 
   return (
     <div className="register-form-container">
-      <h3>Nova Visita</h3>
+      <h3>Editar Visita</h3>
 
       <form>
         <div className="form-row">
@@ -240,8 +254,8 @@ export default function CadastrarVisitas() {
           </div>
         </div>
 
-        <button type="button" onClick={() => handleCadastrarVisita()}>
-          Cadastrar
+        <button type="button" onClick={() => handleEditarVisita()}>
+          EDITAR
         </button>
       </form>
     </div>

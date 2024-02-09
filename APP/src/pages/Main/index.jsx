@@ -8,6 +8,10 @@ export default function Main() {
     <div className="main">
       <Navbar />
       <Outlet />
+
+      <div className="dados-container">
+        <h6>DESENVOLVIDO POR: Matheus Letra</h6>
+      </div>
     </div>
   )
 }

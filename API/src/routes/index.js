@@ -4,11 +4,15 @@ const router = express.Router()
 const CadastrosController = require('../controllers/cadastros')
 const UsuariosController = require('../controllers/usuarios')
 const VisitasController = require('../controllers/visitas')
+const HomeController = require('../controllers/home')
 
 router.get('/', (req, res) => {
   res.status(200).send({ message: 'Bem vindo a API do controle de visitas' })
 })
 
+
+// ************* HOME *************************
+router.get('/home', HomeController.buscarDados)
 
 // ************* CADASTROS *************************
 router.get('/cadastros', CadastrosController.buscarTodos)
