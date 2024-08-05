@@ -1,4 +1,4 @@
-# Visit Control System
+# Visit Management System
 
 This project contains the backend and frontend applications of a visit management system
 
